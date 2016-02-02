@@ -1,0 +1,28 @@
+{
+    "kayitlar": [
+      {
+        "id": 1,
+        "ad": "Tuva",
+        "soyad": "Ergun",
+        "sehir": "Konya"
+      },
+      {
+        "id": 2,
+        "ad": "Ayca",
+        "soyad": "Akduman",
+        "sehir": "Istanbul"
+      },
+      {
+        "id": 3,
+        "ad": "Ibrahim",
+        "soyad": "Sengul",
+        "sehir": "Duzce"
+      },
+      {
+        "id": 4,
+        "ad": "Ali",
+        "soyad": "Ata",
+        "sehir": "Bak"
+      }
+    ]
+}

@@ -16,10 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import java.util.ArrayList;
 
 public class Dashboard extends AppCompatActivity {
@@ -27,20 +23,19 @@ public class Dashboard extends AppCompatActivity {
     private TextView username;
     private String mUsername;
     private ListView cities;
-    private ArrayList<String> cityList = new ArrayList<>();
-    ArrayAdapter<String> adapter;
     private Button logoutButton;
+
+    private ArrayList<String> cityList = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
+
     private ABSharedPreferences sp;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    //private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        sp = new ABSharedPreferences(Dashboard.this);
 
         Log.d("yasamdongusu", "Activity baslatildi.");
 
@@ -48,9 +43,8 @@ public class Dashboard extends AppCompatActivity {
         username = (TextView) findViewById(R.id.username);
         mUsername = getIntent().getStringExtra("username");
         username.setText("Selam " + mUsername);
-        sp=new ABSharedPreferences(Dashboard.this);
-        cities = (ListView) findViewById(R.id.cities);
 
+        cities = (ListView) findViewById(R.id.cities);
 
         fillInCities();
         adapter = new ArrayAdapter<String>(
@@ -58,78 +52,69 @@ public class Dashboard extends AppCompatActivity {
                 android.R.layout.simple_list_item_1,
                 cityList
         );
-
-        //List viewi adaptera baglama
         cities.setAdapter(adapter);
 
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                logout();
-                }
-        });
-
-
-
-        //Iteme tıklanınca Toast goster
         cities.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(
                         Dashboard.this,
-                        cityList.get(position) + " is Great",
+                        "Sectiginiz sehir: " + cityList.get(position),
                         Toast.LENGTH_LONG
                 ).show();
             }
         });
 
-
-        //Iteme uzun basınca
         cities.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 showAlertDialog(position);
-
-                /*
-                Toast.makeText(
-                        Dashboard.this,
-                        cityList.get(position) + " will be deleted",
-                        Toast.LENGTH_LONG
-                ).show();
-                //return false;*/
-
                 return false;
             }
-    });}
+        });
 
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
-    private void logout(){
-        sp.editor.remove("isLoggedIn");
-        sp.editor.commit();
-
-        Intent mainIntent = new Intent(Dashboard.this, MainActivity.class);
-        startActivity(mainIntent);
     }
 
-    private void showAlertDialog(final int position){
+    private void logout() {
+        sp.editor.remove("isLoggedIn");
+        sp.editor.commit();
+        Intent mainIntent = new Intent(
+                Dashboard.this,
+                MainActivity.class
+        );
+        startActivity(mainIntent);
+        finish();
+    }
+
+    private void showAlertDialog(final int position) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Dashboard.this);
-        dialog.setTitle("ar yu şuur");
+        dialog.setTitle("Emin misiniz?");
         dialog.setMessage(
-                cityList.get(position) + " to be deleted?"
+                cityList.get(position) + " kaydini silmek istediginize emin misiniz?"
         );
         dialog.setCancelable(false);
         dialog.setPositiveButton(
-                "Yes",
+                "Evet",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         deleteCity(position);
-                        Toast.makeText(Dashboard.this,
-                                "Item Deleted",
-                                Toast.LENGTH_SHORT);
+                        Toast.makeText(
+                                Dashboard.this,
+                                "Kayit basariyla silindi!",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                        dialog.dismiss();
                     }
-                });
+                }
+        );
         dialog.setNegativeButton(
                 "Hayır",
                 new DialogInterface.OnClickListener() {
@@ -139,24 +124,30 @@ public class Dashboard extends AppCompatActivity {
                     }
                 }
         );
-                dialog.create().show();
+        dialog.create().show();
     }
 
-
-
-
-    private void deleteCity(int position){
-    cityList.remove(position);
-    adapter.notifyDataSetChanged();}
-
+    private void deleteCity(int position) {
+        cityList.remove(position);
+        adapter.notifyDataSetChanged();
+    }
 
     private void fillInCities() {
         cityList.add("Istanbul");
-        cityList.add("Adana");
+        cityList.add("Ankara");
         cityList.add("Izmir");
-        cityList.add("Düzce");
-        cityList.add("Ordu");
-        cityList.add("Manisa");
+        cityList.add("Adana");
+        cityList.add("Aydin");
+        cityList.add("Istanbul");
+        cityList.add("Ankara");
+        cityList.add("Izmir");
+        cityList.add("Adana");
+        cityList.add("Aydin");
+        cityList.add("Istanbul");
+        cityList.add("Ankara");
+        cityList.add("Izmir");
+        cityList.add("Adana");
+        cityList.add("Aydin");
     }
 
     @Override

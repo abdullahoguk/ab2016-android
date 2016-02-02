@@ -17,14 +17,12 @@ public class MainActivity extends AppCompatActivity {
     private EditText password;
     private Button buttonLogin;
     private Button buttonDataParse;
-    private Button buttonRemoteJSON;
-
 
     private String mUsername;
     private String mPassword;
 
-
     private ABSharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         sp = new ABSharedPreferences(MainActivity.this);
 
         checkLogin();
-
 
         init();
 
@@ -51,27 +48,16 @@ public class MainActivity extends AppCompatActivity {
                 mUsername = username.getText().toString();
                 mPassword = password.getText().toString();
                 if (mUsername.equals("ali") &&
-                        mPassword.equals("123")) {
+                    mPassword.equals("123")) {
+
                     sp.editor.putBoolean("isLoggedIn", true);
                     sp.editor.commit();
-
 
                     openDashboard();
                     finish();
                 }
             }
         });
-
-        buttonRemoteJSON.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent remoteJsonIntent = new Intent(MainActivity.this,RemoteJSON.class);
-                startActivity(remoteJsonIntent);
-            }
-    });
-
-
 
         buttonDataParse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,16 +74,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private void checkLogin(){
-        boolean isLoggedIn = sp.preferences.getBoolean("isLoggedIn",false);
-        if (isLoggedIn){
+    private void checkLogin() {
+        boolean isLoggedIn = sp.preferences.getBoolean("isLoggedIn", false);
+        if (isLoggedIn) {
             openDashboard();
             finish();
-
         }
-
-
     }
 
     private void openDashboard() {
@@ -114,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.password);
         buttonLogin = (Button) findViewById(R.id.button_login);
         buttonDataParse = (Button) findViewById(R.id.button_data_parse);
-        buttonRemoteJSON = (Button) findViewById(R.id.button_remote_json);
     }
 
     @Override
@@ -124,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-
-
-    //menü itemlerine basıldıgında
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -134,23 +112,19 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //Settings e basınca
-        switch (id){
+        switch (id) {
             case R.id.action_settings:
                 Toast.makeText(
                         MainActivity.this,
-                        "Settings not found!!!",
+                        "Settings not found!",
                         Toast.LENGTH_SHORT
                 ).show();
                 return true;
-
             case R.id.action_exit:
                 finish();
+                return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
-
-
 }
